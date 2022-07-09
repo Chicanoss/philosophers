@@ -8,6 +8,7 @@ DIR_OBJS	:=	.objs
 DIR_INCS	:=	incs
 
 LST_SRCS	:=	philosophers.c \
+				execution.c \
 
 
 LST_OBJS	:=	$(LST_SRCS:.c=.o)
