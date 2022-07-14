@@ -1,7 +1,7 @@
 NAME	:=	philosophers
 
 CC	:= gcc
-CFLAGS	:=	#-Wall -Wextra -Werror
+CFLAGS	:=	-Wall -Wextra -fsanitize=address -g3
 
 DIR_SRCS	:=	srcs
 DIR_OBJS	:=	.objs

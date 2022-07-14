@@ -12,6 +12,8 @@
 #include <sys/time.h>
 #include <time.h>
 
+struct s_argument;
+
 typedef struct s_philosophers
 {
 	// Philo misc
@@ -21,6 +23,7 @@ typedef struct s_philosophers
 	int			position;
 	int			left_fork;
 	int			right_fork;
+	
 
 	// Time for each philo
 
@@ -28,10 +31,14 @@ typedef struct s_philosophers
 	int			ttt; // time to think
 	int			tts; // time to think
 
+	// Main
+
+	struct s_struct *main;
+
 
 }				t_philosophers;
 
-typedef struct s_arguments
+typedef struct s_struct
 {
 
     // Test Functions
@@ -40,6 +47,7 @@ typedef struct s_arguments
     char	*str2;
     int		j;
     int		k;
+	int 	pos;
 
     // Time functions
 
@@ -50,7 +58,7 @@ typedef struct s_arguments
 	// Args
 
 	int			philo_count; // Nbr of philo's
-	size_t		die_time; //Time until philo must eat
+	size_t		need_to_eat_time; //Time until philo must eat
 	size_t		eat_time; // How long it takes for a philosopher to eat
 	size_t		sleep_time; //How long it takes for a philosopher to sleep
 	size_t		repeat_time; // Number of times every philosopher must eat before exiting
@@ -58,12 +66,17 @@ typedef struct s_arguments
 	//Philo
 
 	t_philosophers *philo;
+	int			*forks;
+
+	pthread_mutex_t printmutex;	
+	pthread_mutex_t	*forkmutex;
 
 	
 }				t_struct;
 
 //functions 
-int start_execution(t_struct *data);
+int start_execution(void* philo_temp);
+size_t get_usec();
 
 
 #endif
