@@ -13,6 +13,12 @@ size_t	get_usec(void)
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
+
+/*int get_args(t_struct *main, int 	argc, char	*argv)
+{
+
+}*/
+
 int	philosophers_placement(t_struct *main)
 {
 	int i;
@@ -28,6 +34,18 @@ int	philosophers_placement(t_struct *main)
 		else
 			main->philo[i].right_fork = 0;
 		main->philo[i].main = main;
+
+		/**
+		 * On inverse les fouchettes pour un philo sur deux pour
+		 * eviter le probleme de "deadlock".
+		 */
+		if (i & 1)
+		{
+			int tmp = main->philo[i].left_fork;
+			main->philo[i].left_fork = main->philo[i].right_fork;
+			main->philo[i].right_fork = tmp;
+		}
+
 		i++;
 	}
 	return(0);
@@ -48,6 +66,15 @@ void get_mutex(t_struct *main)
 	pthread_mutex_init(&main->printmutex, NULL);
 }
 
+void	ft_usleep(size_t ms)
+{
+	size_t	end;
+
+	end = get_usec() + ms;
+	while (get_usec() < end)
+		usleep(ms / 1000);
+}
+
 int main()
 {
 	int i;
@@ -56,8 +83,9 @@ int main()
 
 	main.philo_count = 4;
 	main.eat_time = 100;
-	main.need_to_eat_time = 250;
-	main.sleep_time = 125;
+	main.need_to_eat_time = 100;
+	main.sleep_time = 100;
+	main.repeat_time = 10;
 
 	main.philo = malloc(sizeof(t_philosophers) * main.philo_count);
 	main.forks = malloc(sizeof(int) * main.philo_count);
@@ -68,83 +96,9 @@ int main()
 	pthread_t	ida;
 	while(i < main.philo_count)
 	{
-		//printf("test\n");
 		pthread_create(&ida, NULL, (void *)routine, (void *)&main.philo[i]);
-		pthread_detach(ida);
 		i++;
 	}
-	while(1)
-	{
-	}
-	//pthread_join(ida, NULL);
-
-
-
-
-
-
-
-
-
-
-
-	/*while (1)
-	{
-		data.usec = get_usec() - data.starting_time;
-		time_to_eat = get_usec() - reset_eat;
-		//printf("%lu\n", data.usec);
-		if (time_to_eat == data.eating_time)
-		{
-			printf("Eating time\n");
-			time_to_eat = 0;
-			reset_eat = get_usec();
-		}
-		
-		while (i < data.philo_nbr)
-		{
-			pthread_create(&data.id[i], NULL, (void *)routine, &data);
-			i++;
-			d.k++;
-		}
-
-
-	}*/
+	pthread_join(ida, NULL);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-	data.j = 1;
-	data.str = strdup("ADOF1AK");
-	data.k = 0;
-	i = 0;
-	while (i < 2)
-	{
-		pthread_create(&data.id[i], NULL, (void *)routine, &data);
-		pthread_join(data.id[i], NULL);
-		i++;
-		data.k++;
-	}
-	i = 0;
-	data.k = 0;
-	while (i < 2)
-	{
-		i++;
-		data.k++;
-	}
-	printf("Valeur de j : %d\n", data.j);
-	printf("STR : %s\n", data.str);*/

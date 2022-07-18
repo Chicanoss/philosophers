@@ -23,6 +23,7 @@ typedef struct s_philosophers
 	int			position;
 	int			left_fork;
 	int			right_fork;
+	size_t		nbr_meal;
 	
 
 	// Time for each philo
@@ -77,6 +78,7 @@ typedef struct s_struct
 //functions 
 int start_execution(void* philo_temp);
 size_t get_usec();
+void	ft_usleep(size_t ms);
 
 
 #endif
