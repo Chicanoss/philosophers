@@ -83,12 +83,13 @@ int main()
 	t_struct main;
 	size_t	time;
 
-	main.philo_count = 200;
+	main.philo_count = 60;
 	main.eat_time = 300;
 	main.need_to_eat_time = 500;
 	main.sleep_time = 100;
 	main.repeat_time = 5;
 	main.over = 0;
+	//main.philo->is_over = 0;
 
 	main.philo = malloc(sizeof(t_philosophers) * main.philo_count);
 	main.forks = malloc(sizeof(int) * main.philo_count);
@@ -107,6 +108,9 @@ int main()
 		pthread_detach(ida);
 	}
 	while(1)
-	{}
+	{
+		//if (main.philo->is_over == 1)
+		//	break;
+	}
 
 }
