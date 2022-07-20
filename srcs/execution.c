@@ -1,36 +1,39 @@
 #include "../incs/philosophers.h"
 
-/*int eating_time(t_struct *data)
-{
-
-    return(0);
-}*/
 int taking_fork(t_philosophers *philo)
 {
-    int lfork;
-    int rfork;
-
-    lfork = philo->left_fork;
-    rfork = philo->right_fork;
-    pthread_mutex_lock(&philo->main->forkmutex[lfork]);
-    pthread_mutex_lock(&philo->main->printmutex);
-    printf("%zu    : philosopher %d took left fork\n", philo->main->usec, philo->position);
-    pthread_mutex_unlock(&philo->main->printmutex);
-	philo->main->forks[lfork] = 1;
-    pthread_mutex_lock(&philo->main->forkmutex[rfork]);
-    pthread_mutex_lock(&philo->main->printmutex);
-    printf("%zu    : philosopher %d took right fork\n", philo->main->usec, philo->position);
-    pthread_mutex_unlock(&philo->main->printmutex);
-    philo->main->forks[rfork] = 1;
+    pthread_mutex_lock(&philo->main->forkmutex[philo->left_fork]);
+    ft_log(philo, philo->main->usec, 1);
+    pthread_mutex_lock(&philo->main->forkmutex[philo->right_fork]);
+	ft_log(philo, philo->main->usec, 7);
     return(0);
  }
 
  int eat(t_philosophers *philo)
  {
-     pthread_mutex_lock(&philo->main->printmutex);
-     printf("%zu    : philosopher %d is eating\n", philo->main->usec, philo->position);
-     pthread_mutex_unlock(&philo->main->printmutex);
-     usleep(philo->main->eat_time);
+
+	ft_log(philo, philo->main->usec, 2);
+    ft_usleep(philo->main->eat_time);
+	pthread_mutex_lock(&philo->main->timemutex);
+	philo->main->usec = get_usec() - philo->main->starting_time;
+	pthread_mutex_unlock(&philo->main->timemutex);
+    philo->nbr_meal++;
+    if (philo->nbr_meal == philo->main->repeat_time && philo->main->repeat_time > 0)
+    {
+    	pthread_mutex_lock(&philo->main->timemutex);
+        philo->main->over++;
+        pthread_mutex_unlock(&philo->main->timemutex);
+        return(0);
+    }
+    if (philo->main->over == philo->main->philo_count)
+    {
+        pthread_mutex_unlock(&philo->main->forkmutex[philo->right_fork]);
+	    pthread_mutex_unlock(&philo->main->forkmutex[philo->left_fork]);
+        pthread_mutex_lock(&philo->main->printmutex);
+        printf("philosopher %zu has finished ! \n", philo->position);
+		pthread_mutex_unlock(&philo->main->printmutex);
+        return(1);
+    }
      return(0);
  }
 
@@ -38,32 +41,38 @@ int taking_fork(t_philosophers *philo)
  {
 	pthread_mutex_unlock(&philo->main->forkmutex[philo->right_fork]);
 	pthread_mutex_unlock(&philo->main->forkmutex[philo->left_fork]);
-    pthread_mutex_lock(&philo->main->printmutex);
-    printf("%zu    : philosopher %d start sleeping\n", philo->main->usec, philo->position);
-    pthread_mutex_unlock(&philo->main->printmutex);
-    ft_usleep(philo->main->sleep_time);  
+	pthread_mutex_lock(&philo->main->timemutex);
+    ft_log(philo, philo->main->usec, 3);
+	pthread_mutex_unlock(&philo->main->timemutex);
+	pthread_mutex_lock(&philo->main->timemutex);
+    ft_usleep(philo->main->sleep_time);
+	pthread_mutex_unlock(&philo->main->timemutex);
+	pthread_mutex_lock(&philo->main->timemutex);
+	philo->main->usec = get_usec() - philo->main->starting_time;
+	pthread_mutex_unlock(&philo->main->timemutex);
  }
 
-int start_execution(void *philo_temp)
+void    *start_execution(void *philo_temp)
 {
 
     t_philosophers *philo;
 
     philo = (t_philosophers *)philo_temp;
-    philo->main->usec = get_usec() - philo->main->starting_time;
-    if (philo->position % 2 == 0)
-    {
-        pthread_mutex_lock(&philo->main->printmutex);
-        printf("%zu    : philosopher %d start thinking\n", philo->main->usec, philo->position);
-        pthread_mutex_unlock(&philo->main->printmutex);
-        ft_usleep(philo->main->eat_time);
-    }
+    philo->nbr_meal = 0;
+	while (1)
+	{
+		if (philo->main->ready == philo->main->philo_count)
+			break;
+	}
+	if (philo->position % 2 == 0)
+	{
+		printf("hello \n\n\n");
+		ft_usleep(500);
+	}
     while (1)
     {
-        philo->main->usec = get_usec() - philo->main->starting_time;
-        taking_fork(philo);
-        eat(philo);
-        release_forks(philo);
+        if (taking_fork(philo) || eat(philo) || release_forks(philo))
+            break;
     }
-    return(0);
+    return(NULL);
 }

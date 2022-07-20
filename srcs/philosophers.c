@@ -1,10 +1,10 @@
 #include "../incs/philosophers.h"
 
-void *routine(void *philo)
+/*void *routine(void *philo)
 {
 	start_execution(philo);
 	pthread_exit(NULL);
-}
+}*/
 
 size_t	get_usec(void)
 {
@@ -34,6 +34,7 @@ int	philosophers_placement(t_struct *main)
 		else
 			main->philo[i].right_fork = 0;
 		main->philo[i].main = main;
+		main->philo->nbr_meal = 0;
 
 		/**
 		 * On inverse les fouchettes pour un philo sur deux pour
@@ -64,6 +65,7 @@ void get_mutex(t_struct *main)
 		i++;
 	}
 	pthread_mutex_init(&main->printmutex, NULL);
+	pthread_mutex_init(&main->timemutex, NULL);
 }
 
 void	ft_usleep(size_t ms)
@@ -81,24 +83,30 @@ int main()
 	t_struct main;
 	size_t	time;
 
-	main.philo_count = 4;
-	main.eat_time = 100;
-	main.need_to_eat_time = 100;
+	main.philo_count = 200;
+	main.eat_time = 300;
+	main.need_to_eat_time = 500;
 	main.sleep_time = 100;
-	main.repeat_time = 10;
+	main.repeat_time = 5;
+	main.over = 0;
 
 	main.philo = malloc(sizeof(t_philosophers) * main.philo_count);
 	main.forks = malloc(sizeof(int) * main.philo_count);
+	main.ready = 0;
 	main.starting_time = get_usec();
 	philosophers_placement(&main);
 	get_mutex(&main);
 	i = 0;
 	pthread_t	ida;
+	printf("hello\n\n");
 	while(i < main.philo_count)
 	{
-		pthread_create(&ida, NULL, (void *)routine, (void *)&main.philo[i]);
+		pthread_create(&ida, NULL, (void *)start_execution, (void *)&main.philo[i]);
 		i++;
+		main.ready++;
+		pthread_detach(ida);
 	}
-	pthread_join(ida, NULL);
+	while(1)
+	{}
 
 }

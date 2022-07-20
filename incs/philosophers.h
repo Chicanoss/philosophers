@@ -20,7 +20,7 @@ typedef struct s_philosophers
 
 	pthread_t	id; // philosopher ID
 	int			state; // 1: think, 2: eat, 3: sleep, 4: dead
-	int			position;
+	size_t			position;
 	int			left_fork;
 	int			right_fork;
 	size_t		nbr_meal;
@@ -49,11 +49,13 @@ typedef struct s_struct
     int		j;
     int		k;
 	int 	pos;
+	int		over;
+	int		ready;
 
     // Time functions
 
-    size_t	usec;
 	size_t	starting_time;	
+    size_t		usec;
 
 
 	// Args
@@ -71,14 +73,16 @@ typedef struct s_struct
 
 	pthread_mutex_t printmutex;	
 	pthread_mutex_t	*forkmutex;
+	pthread_mutex_t timemutex;
 
 	
 }				t_struct;
 
 //functions 
-int start_execution(void* philo_temp);
+void	*start_execution(void* philo_temp);
 size_t get_usec();
 void	ft_usleep(size_t ms);
+void	ft_log(t_philosophers *philo, size_t timestamp, int action);
 
 
 #endif

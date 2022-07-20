@@ -1,7 +1,7 @@
 NAME	:=	philosophers
 
 CC	:= gcc
-CFLAGS	:=	-Wall -Wextra -fsanitize=address -g3
+CFLAGS	:=	-Wall -Wextra -fsanitize=thread 
 
 DIR_SRCS	:=	srcs
 DIR_OBJS	:=	.objs
@@ -9,6 +9,7 @@ DIR_INCS	:=	incs
 
 LST_SRCS	:=	philosophers.c \
 				execution.c \
+				log.c \
 
 
 LST_OBJS	:=	$(LST_SRCS:.c=.o)
