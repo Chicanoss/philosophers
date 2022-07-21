@@ -78,7 +78,7 @@ int main()
 	main.eat_time = 100;
 	//main.philo->ttd = 500;
 	main.sleep_time = 50;
-	main.repeat_time = 10;
+	main.repeat_time = 0;
 	main.over = 0;
 	main.is_over = 0;
 
