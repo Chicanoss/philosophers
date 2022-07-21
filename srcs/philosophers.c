@@ -24,10 +24,7 @@ int	philosophers_placement(t_struct *main)
 		main->forks[i] = 0;
 		main->philo[i].position = i;
 		main->philo[i].left_fork = i;
-		if (i != main->philo_count - 1)
-			main->philo[i].right_fork = i + 1;
-		else
-			main->philo[i].right_fork = 0;
+		main->philo[i].right_fork = (i + 1) % main->philo_count;
 		main->philo[i].main = main;
 		main->philo->nbr_meal = 0;
 
@@ -35,12 +32,12 @@ int	philosophers_placement(t_struct *main)
 		 * On inverse les fouchettes pour un philo sur deux pour
 		 * eviter le probleme de "deadlock".
 		 */
-		if (i & 1)
+		/*if (i & 1)
 		{
 			int tmp = main->philo[i].left_fork;
 			main->philo[i].left_fork = main->philo[i].right_fork;
 			main->philo[i].right_fork = tmp;
-		}
+		}*/
 
 		i++;
 	}
@@ -81,7 +78,7 @@ int main()
 	main.eat_time = 100;
 	//main.philo->ttd = 500;
 	main.sleep_time = 50;
-	main.repeat_time = 5;
+	main.repeat_time = 10;
 	main.over = 0;
 	main.is_over = 0;
 

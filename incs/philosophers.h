@@ -21,8 +21,8 @@ typedef struct s_philosophers
 	pthread_t	id; // philosopher ID
 	int			state; // 1: think, 2: eat, 3: sleep, 4: dead
 	size_t			position;
-	int			left_fork;
-	int			right_fork;
+	size_t		left_fork;
+	size_t		right_fork;
 	size_t		nbr_meal;
 	size_t		usec;
 	
