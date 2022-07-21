@@ -24,13 +24,13 @@ int taking_fork(t_philosophers *philo)
  {
 
 	ft_log(philo, get_usec() - philo->main->starting_time, 2);
-    ft_usleep(philo->main->eat_time);
+    ft_usleep(100);
     philo->nbr_meal++;
     if (philo->nbr_meal == philo->main->repeat_time && philo->main->repeat_time > 0)
     {
-    	pthread_mutex_lock(&philo->main->timemutex);
+    	//pthread_mutex_lock(&philo->main->timemutex);
         philo->main->over++;
-        pthread_mutex_unlock(&philo->main->timemutex);
+     //   pthread_mutex_unlock(&philo->main->timemutex);
         return(0);
     }
 	// data race ici attention
@@ -83,7 +83,8 @@ void    *start_execution(void *philo_temp)
 	if (philo->position % 2 != 0)
 	{
 		ft_log(philo, get_usec() - philo->main->starting_time, 4);
-		ft_usleep(50);
+		//ft_usleep(philo->main->eat_time);
+		ft_usleep(100);
 	}
     while (1)
     {
