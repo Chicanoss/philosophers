@@ -1,10 +1,5 @@
 #include "../incs/philosophers.h"
 
-/*void *routine(void *philo)
-{
-	start_execution(philo);
-	pthread_exit(NULL);
-}*/
 
 size_t	get_usec(void)
 {
@@ -81,25 +76,23 @@ int main()
 {
 	int i;
 	t_struct main;
-	size_t	time;
 
-	main.philo_count = 60;
-	main.eat_time = 300;
-	main.need_to_eat_time = 500;
-	main.sleep_time = 100;
+	main.philo_count = 20;
+	main.eat_time = 100;
+	//main.philo->ttd = 500;
+	main.sleep_time = 50;
 	main.repeat_time = 5;
 	main.over = 0;
-	//main.philo->is_over = 0;
+	main.is_over = 0;
 
 	main.philo = malloc(sizeof(t_philosophers) * main.philo_count);
 	main.forks = malloc(sizeof(int) * main.philo_count);
 	main.ready = 0;
-	main.starting_time = get_usec();
+	//main.starting_time = get_usec();
 	philosophers_placement(&main);
 	get_mutex(&main);
 	i = 0;
 	pthread_t	ida;
-	printf("hello\n\n");
 	while(i < main.philo_count)
 	{
 		pthread_create(&ida, NULL, (void *)start_execution, (void *)&main.philo[i]);
@@ -109,8 +102,11 @@ int main()
 	}
 	while(1)
 	{
-		//if (main.philo->is_over == 1)
-		//	break;
+		if (main.is_over != 0)
+		{
+			ft_usleep(500);
+			break;
+		}
 	}
 
 }

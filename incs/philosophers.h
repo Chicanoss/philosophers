@@ -25,7 +25,6 @@ typedef struct s_philosophers
 	int			right_fork;
 	size_t		nbr_meal;
 	size_t		usec;
-	int			is_over;
 	
 
 	// Time for each philo
@@ -53,6 +52,7 @@ typedef struct s_struct
 	int 	pos;
 	int		over;
 	int		ready;
+	int		is_over;
 
     // Time functions
 
