@@ -76,7 +76,7 @@ int main()
 
 	main.philo_count = 10;
 	main.eat_time = 150;
-	//main.philo->ttd = 500;
+	main.ttd = 500;
 	main.sleep_time = 100;
 	main.repeat_time = 10;
 	main.over = 0;
@@ -90,6 +90,7 @@ int main()
 	get_mutex(&main);
 	i = 0;
 	pthread_t	ida;
+	printf("hello");
 	while(i < main.philo_count)
 	{
 		pthread_create(&ida, NULL, (void *)start_execution, (void *)&main.philo[i]);

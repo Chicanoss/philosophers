@@ -25,11 +25,11 @@ typedef struct s_philosophers
 	size_t		right_fork;
 	size_t		nbr_meal;
 	size_t		usec;
+	size_t		last_meal;
 	
 
 	// Time for each philo
-
-	int			ttd; // time till die
+ // time till die
 	int			ttt; // time to think
 	int			tts; // time to think
 
@@ -56,7 +56,8 @@ typedef struct s_struct
 
     // Time functions
 
-	size_t	starting_time;	
+	size_t	starting_time;
+	size_t			ttd;
 
 
 	// Args

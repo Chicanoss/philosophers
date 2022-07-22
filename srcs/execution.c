@@ -1,20 +1,25 @@
 #include "../incs/philosophers.h"
 
-/*int	is_dead(t_philosophers *philo)
+int	is_dead(t_philosophers *philo)
 {
-	size_t	dead;
+	//size_t	dead;
 	
-	if (philo->lastmeal - get_usec() > philo->ttd)
+	if (philo->last_meal - get_usec() > philo->main->ttd)
+	{
+		ft_log(philo, get_usec() - philo->main->starting_time, 5);		
 		return(1);
+	}
 	else 
 		return(0);
-}*/
+}
 
  int eat(t_philosophers *philo)
- {
-
+ { 	
+	//if (is_dead(philo))
+	//	return(1);
 	ft_log(philo, get_usec() - philo->main->starting_time, 2);
     usleep(100 * 1000);
+	philo->last_meal = get_usec() - philo->main->starting_time;
     philo->nbr_meal++;
     if (philo->nbr_meal == philo->main->repeat_time && philo->main->repeat_time > 0)
     {
@@ -42,6 +47,8 @@
 
 int taking_fork(t_philosophers *philo)
 {
+	if (is_dead(philo))
+		return(1);
     pthread_mutex_lock(&philo->main->forkmutex[philo->left_fork]);
     pthread_mutex_lock(&philo->main->forkmutex[philo->right_fork]);
     ft_log(philo, get_usec() - philo->main->starting_time, 1);
