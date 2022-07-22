@@ -14,7 +14,7 @@
  {
 
 	ft_log(philo, get_usec() - philo->main->starting_time, 2);
-    ft_usleep(100);
+    usleep(100 * 1000);
     philo->nbr_meal++;
     if (philo->nbr_meal == philo->main->repeat_time && philo->main->repeat_time > 0)
     {
@@ -50,7 +50,7 @@ int taking_fork(t_philosophers *philo)
 	pthread_mutex_unlock(&philo->main->forkmutex[philo->right_fork]);
 	pthread_mutex_unlock(&philo->main->forkmutex[philo->left_fork]);
     ft_log(philo, get_usec() - philo->main->starting_time, 3);
-    ft_usleep(50);
+    usleep(50 * 1000);
 	ft_log(philo, get_usec() - philo->main->starting_time, 4);
 	return(0);
  }
@@ -73,11 +73,11 @@ void    *start_execution(void *philo_temp)
 		}
 	}
 	philo->main->starting_time = get_usec();
+	ft_log(philo, get_usec() - philo->main->starting_time, 4);
 	if (philo->position % 2 != 0)
 	{
-		ft_log(philo, get_usec() - philo->main->starting_time, 4);
-		ft_usleep(philo->main->eat_time / 2);
-		//ft_usleep(100);
+		//ft_usleep(philo->main->eat_time / 2);
+		usleep(100 * 1000);
 	}
     while (1)
     {

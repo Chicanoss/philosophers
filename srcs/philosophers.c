@@ -75,10 +75,10 @@ int main()
 	t_struct main;
 
 	main.philo_count = 10;
-	main.eat_time = 100;
+	main.eat_time = 150;
 	//main.philo->ttd = 500;
-	main.sleep_time = 50;
-	main.repeat_time = 0;
+	main.sleep_time = 100;
+	main.repeat_time = 10;
 	main.over = 0;
 	main.is_over = 0;
 
