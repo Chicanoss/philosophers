@@ -74,7 +74,7 @@ int main()
 	int i;
 	t_struct main;
 
-	main.philo_count = 20;
+	main.philo_count = 10;
 	main.eat_time = 100;
 	//main.philo->ttd = 500;
 	main.sleep_time = 50;

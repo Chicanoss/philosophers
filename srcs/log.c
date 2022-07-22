@@ -15,8 +15,6 @@ void	ft_log(t_philosophers *philo, size_t timestamp, int action)
 		printf("%zu %zu died \n", timestamp, philo->position);
 	else if (action == 6)
 		printf("%zu %zu has finished his meals\n", timestamp, philo->position);
-    else if (action == 7)
-        printf("%zu %zu has taken a fork\n", timestamp, philo->position);
 	pthread_mutex_unlock(&philo->main->printmutex);
 }
 
